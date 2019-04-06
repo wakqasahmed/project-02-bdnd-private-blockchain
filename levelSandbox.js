@@ -18,9 +18,31 @@ function getLevelDBData(key){
   db.get(key, function(err, value) {
     if (err) return console.log('Not found!', err);
     console.log('Value = ' + value);
+    return value;
   })
 }
 
+// Method that return the height
+function getBlockHeight() {
+    let blockHeight = -1;
+    db.createReadStream()
+    .on('data', function (data) {
+        // Count each object inserted
+        console.log(data.key, '=', data.value);
+        blockHeight++;          
+      })
+    .on('error', function (err) {
+        return console.log('Unable to read data stream!', err)
+      })
+      .on('close', function () {
+        //return with the count value        
+        console.log('Stream closed and resolved');
+        console.log('Block Height: ' + blockHeight);
+        return blockHeight;
+    });
+}
+
+/*
 // Add data to levelDB with value
 function addDataToLevelDB(value) {
     let i = 0;
@@ -33,6 +55,7 @@ function addDataToLevelDB(value) {
           addLevelDBData(i, value);
         });
 }
+*/
 
 /* ===== Testing ==============================================================|
 |  - Self-invoking function to add blocks to chain                             |
@@ -45,10 +68,18 @@ function addDataToLevelDB(value) {
 |     ( new block every 10 minutes )                                           |
 |  ===========================================================================*/
 
-
+/*
 (function theLoop (i) {
   setTimeout(function () {
     addDataToLevelDB('Testing data');
     if (--i) theLoop(i);
   }, 100);
 })(10);
+*/
+
+
+module.exports = {
+  addLevelDBData: addLevelDBData,
+  getLevelDBData: getLevelDBData,
+  getBlockHeight: getBlockHeight
+};
