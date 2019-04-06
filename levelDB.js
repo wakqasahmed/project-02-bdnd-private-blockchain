@@ -65,7 +65,7 @@ class LevelSandbox {
              })
              .on('close', function () {
                 //resolve with the count value
-                console.log('Stream closed')
+                // console.log('Stream closed')
                 resolve(blockHeight);
             });
         });

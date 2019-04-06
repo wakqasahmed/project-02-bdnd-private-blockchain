@@ -64,6 +64,8 @@ class Blockchain{
     
     // Adding block to level db
     await this.chain.addLevelDBData(newBlock.height, JSON.stringify(newBlock));
+
+    console.log(newBlock);
   }
 
   // Get block height
